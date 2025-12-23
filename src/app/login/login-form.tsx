@@ -14,13 +14,14 @@ import {
 } from '@/components/ui/card';
 import { login, signup, forgotPassword } from './actions';
 import { HelpBubble } from '@/components/help-bubble';
-import { InfoIcon, Loader2 } from 'lucide-react';
+import { InfoIcon, Loader2, Eye, EyeOff } from 'lucide-react';
 
 export function AuthForm({ searchParams }: {
     searchParams: { message?: string; error?: string }
 }) {
     const [mode, setMode] = useState<'login' | 'signup' | 'forgot'>('login');
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleFormAction = async (formData: FormData, action: (fd: FormData) => Promise<unknown>) => {
         setLoading(true);
@@ -107,14 +108,27 @@ export function AuthForm({ searchParams }: {
                                     </button>
                                 )}
                             </div>
-                            <Input
-                                id="password"
-                                name="password"
-                                type="password"
-                                placeholder="••••••••"
-                                required
-                                className="h-11 bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-indigo-500 transition-all"
-                            />
+                            <div className="relative">
+                                <Input
+                                    id="password"
+                                    name="password"
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="••••••••"
+                                    required
+                                    className="h-11 bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-indigo-500 transition-all pr-10"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+                                >
+                                    {showPassword ? (
+                                        <EyeOff className="w-4 h-4" />
+                                    ) : (
+                                        <Eye className="w-4 h-4" />
+                                    )}
+                                </button>
+                            </div>
                         </div>
                     )}
 
