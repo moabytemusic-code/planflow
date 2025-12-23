@@ -47,7 +47,7 @@ export default async function DashboardPage() {
                             Total Lessons
                             <HelpBubble content="Total number of lessons created." />
                         </CardTitle>
-                        <Link href="/lessons">
+                        <Link href="/dashboard/lessons">
                             <Button variant="ghost" size="icon" className="h-4 w-4 text-muted-foreground hover:text-primary">
                                 <ArrowRight className="h-4 w-4" />
                             </Button>
