@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String        @id @default(uuid())
+  email            String        @unique
+  name             String?       // User's name
+  theme            String        @default("dark") // 'light', 'dark', 'midnight'
+  createdAt        DateTime      @default(now())
+  stripeCustomerId String?
+  subscriptionTier String        @default("FREE") // 'FREE' or 'PRO'
+  credits          Int           @default(3) // Monthly generation credits
+  lessons          LessonPlan[]
+  subscriptions    Subscription?
+}
+
+model LessonPlan {
+  id        String   @id @default(cuid())
+  title     String
+  date      DateTime // Where it sits on the calendar
+  startTime String?  // Optional time or period, e.g. "10:00 AM" or "Period 2"
+  duration  Int      // Minutes
+  grade     String
+  
+  // This JSON field stores the AI structure (blocks, materials, etc.)
+  content   Json     
+  
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Subscription {
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  user             User     @relation(fields: [userId], references: [id])
+  stripeSubId      String   @unique
+  status           String   // 'active', 'past_due', 'canceled'
+  currentPeriodEnd DateTime
+}
