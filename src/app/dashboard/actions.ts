@@ -87,10 +87,10 @@ export async function getLessons() {
         },
         orderBy: {
             date: 'asc'
-        },
-        include: {
-            shares: true // Optional: if we want to show sharing status
         }
+        // include: {
+        //     shares: true 
+        // }
     })
 }
 
