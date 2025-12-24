@@ -29,11 +29,38 @@ interface Lesson {
 
 function LessonCard({ lesson }: { lesson: Lesson }) {
     return (
-        <Card className="overflow-hidden cursor-grab active:cursor-grabbing shadow-sm hover:shadow-lg border-l-4 border-l-indigo-500 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
-            <div className="p-3 space-y-2">
-                <div className="font-semibold text-sm text-gray-900 dark:text-gray-100 leading-tight line-clamp-2 break-words">
+        <Card className="relative overflow-hidden cursor-grab active:cursor-grabbing shadow-sm hover:shadow-lg border-l-4 border-l-indigo-500 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm group">
+            {/* Action Buttons - Absolute Top Right */}
+            <div className="absolute top-2 right-2 flex gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200 z-10">
+                <div onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
+                        onClick={async () => {
+                            if (confirm('Are you sure you want to delete this lesson? This cannot be undone.')) {
+                                try {
+                                    await deleteLesson(lesson.id)
+                                    toast.success('Lesson deleted')
+                                } catch {
+                                    toast.error('Failed to delete lesson')
+                                }
+                            }
+                        }}
+                    >
+                        <Trash2 className="h-3 w-3" />
+                    </Button>
+                </div>
+                <div onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+                    <ShareLessonDialog lessonId={lesson.id} lessonTitle={lesson.title} />
+                </div>
+            </div>
+
+            <div className="p-3 space-y-3">
+                <div className="font-semibold text-sm text-gray-900 dark:text-gray-100 leading-tight line-clamp-2 break-words pr-14">
                     {lesson.title}
                 </div>
+
                 <div className="flex flex-wrap items-center gap-2 text-[11px] font-medium uppercase tracking-wide text-indigo-600 dark:text-indigo-400">
                     {lesson.startTime && (
                         <span className="bg-indigo-50 dark:bg-indigo-900/40 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
@@ -43,40 +70,15 @@ function LessonCard({ lesson }: { lesson: Lesson }) {
                     <span>{lesson.duration}m</span>
                     <span>{lesson.grade}</span>
                 </div>
-                <div className="flex justify-between items-center pt-2">
-                    {/* Stop propagation for button interaction */}
-                    <div className="flex gap-2">
-                        <div onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-6 w-6 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
-                                onClick={async () => {
-                                    if (confirm('Are you sure you want to delete this lesson? This cannot be undone.')) {
-                                        try {
-                                            await deleteLesson(lesson.id)
-                                            toast.success('Lesson deleted')
-                                        } catch {
-                                            toast.error('Failed to delete lesson')
-                                        }
-                                    }
-                                }}
-                            >
-                                <Trash2 className="h-3 w-3" />
-                            </Button>
-                        </div>
-                        <div onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
-                            <ShareLessonDialog lessonId={lesson.id} lessonTitle={lesson.title} />
-                        </div>
-                    </div>
-                    <div onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
-                        <AIPlanner
-                            lessonId={lesson.id}
-                            existingTitle={lesson.title}
-                            grade={lesson.grade}
-                            hasContent={!!lesson.content && Object.keys(lesson.content as object).length > 0}
-                        />
-                    </div>
+
+                {/* Generate/Details Button - Full Width */}
+                <div className="pt-1" onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+                    <AIPlanner
+                        lessonId={lesson.id}
+                        existingTitle={lesson.title}
+                        grade={lesson.grade}
+                        hasContent={!!lesson.content && Object.keys(lesson.content as object).length > 0}
+                    />
                 </div>
             </div>
         </Card>
