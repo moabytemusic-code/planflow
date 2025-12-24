@@ -110,7 +110,7 @@ function DroppableDay({ day, children, isToday }: { day: Date, children: React.R
     return (
         <div
             ref={setNodeRef}
-            className={`flex flex-col border-r h-full last:border-r-0 min-w-[140px] md:min-w-0 transition-colors duration-300 ${isOver ? 'bg-indigo-50/50 dark:bg-indigo-900/20' : ''}`}
+            className={`flex flex-col border-r h-full last:border-r-0 min-w-[180px] md:min-w-0 transition-colors duration-300 ${isOver ? 'bg-indigo-50/50 dark:bg-indigo-900/20' : ''}`}
         >
             <div className={`text-center py-3 border-b text-sm uppercase tracking-wide font-bold 
                 ${isToday
@@ -198,7 +198,7 @@ export function WeeklyCalendar({ lessons = [] }: { lessons: Lesson[] }) {
                             .filter(lesson => isSameDay(new Date(lesson.date), day))
                             .sort((a, b) => (a.startTime || '').localeCompare(b.startTime || ''))
                         return (
-                            <div key={day.toISOString()} className="flex flex-col border-r h-full last:border-r-0 min-w-[140px] md:min-w-0">
+                            <div key={day.toISOString()} className="flex flex-col border-r h-full last:border-r-0 min-w-[180px] md:min-w-0">
                                 <div className={`text-center py-3 border-b text-sm uppercase tracking-wide font-bold ${isSameDay(day, new Date()) ? 'bg-blue-600 text-white shadow-md' : 'bg-muted/30 text-muted-foreground'}`}>
                                     {format(day, 'EEE d')}
                                 </div>
