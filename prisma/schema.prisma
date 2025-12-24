@@ -36,6 +36,19 @@ model LessonPlan {
   createdAt DateTime @default(now())
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shares    LessonShare[]
+}
+
+model LessonShare {
+  id        String     @id @default(cuid())
+  lessonId  String
+  lesson    LessonPlan @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  userEmail String
+  userId    String?    // Link to User if they have an account
+  permission String    @default("EDIT") // 'VIEW', 'EDIT'
+  createdAt DateTime   @default(now())
+
+  @@unique([lessonId, userEmail])
 }
 
 model Subscription {

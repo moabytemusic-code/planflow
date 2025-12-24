@@ -77,12 +77,47 @@ export async function getLessons() {
 
     return await db.lessonPlan.findMany({
         where: {
-            userId: dbUser.id
+            OR: [
+                { userId: dbUser.id },
+                { shares: { some: { userEmail: user.email! } } }
+            ]
         },
         orderBy: {
             date: 'asc'
+        },
+        include: {
+            shares: true // Optional: if we want to show sharing status
         }
     })
+}
+
+export async function shareLesson(lessonId: string, email: string) {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) throw new Error('Unauthorized')
+
+    // Verify ownership
+    const lesson = await db.lessonPlan.findUnique({
+        where: { id: lessonId, userId: user.id }
+    })
+
+    if (!lesson) throw new Error('Lesson not found or you do not have permission to share it.')
+
+    // Check if target user exists to link userId immediately
+    const targetUser = await db.user.findUnique({ where: { email } })
+
+    await db.lessonShare.create({
+        data: {
+            lessonId,
+            userEmail: email,
+            userId: targetUser?.id,
+            permission: 'EDIT'
+        }
+    })
+
+    revalidatePath('/dashboard')
+    return { success: true }
 }
 
 export async function updateLessonDate(lessonId: string, newDate: Date) {
@@ -116,14 +151,22 @@ export async function updateLessonDetails(lessonId: string, data: {
 
     if (!user) throw new Error('Unauthorized')
 
-    await db.lessonPlan.update({
+    // Check for ownership OR edit permission via share
+    const lesson = await db.lessonPlan.findFirst({
         where: {
             id: lessonId,
-            userId: user.id
-        },
-        data: {
-            ...data
+            OR: [
+                { userId: user.id },
+                { shares: { some: { userEmail: user.email!, permission: 'EDIT' } } }
+            ]
         }
+    })
+
+    if (!lesson) throw new Error('Unauthorized: You cannot edit this lesson.')
+
+    await db.lessonPlan.update({
+        where: { id: lessonId },
+        data: { ...data }
     })
 
     revalidatePath('/dashboard')

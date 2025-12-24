@@ -9,6 +9,7 @@ import { AIPlanner } from '@/components/ai-planner'
 import { DndContext, DragEndEvent, useDraggable, useDroppable, useSensors, useSensor, PointerSensor, KeyboardSensor } from '@dnd-kit/core'
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { updateLessonDate } from '@/app/dashboard/actions'
+import { ShareLessonDialog } from '@/components/share-lesson-dialog'
 
 interface Lesson {
     id: string
@@ -37,15 +38,21 @@ function LessonCard({ lesson }: { lesson: Lesson }) {
                     )}
                     <span className="py-0.5">{lesson.duration}m</span>
                     <span className="py-0.5">{lesson.grade}</span>
+                    <span className="py-0.5">{lesson.grade}</span>
                 </div>
-                {/* Stop propagation for AI button interaction */}
-                <div onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
-                    <AIPlanner
-                        lessonId={lesson.id}
-                        existingTitle={lesson.title}
-                        grade={lesson.grade}
-                        hasContent={!!lesson.content && Object.keys(lesson.content as object).length > 0}
-                    />
+                <div className="flex justify-between items-center pt-2">
+                    {/* Stop propagation for button interaction */}
+                    <div onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+                        <ShareLessonDialog lessonId={lesson.id} lessonTitle={lesson.title} />
+                    </div>
+                    <div onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+                        <AIPlanner
+                            lessonId={lesson.id}
+                            existingTitle={lesson.title}
+                            grade={lesson.grade}
+                            hasContent={!!lesson.content && Object.keys(lesson.content as object).length > 0}
+                        />
+                    </div>
                 </div>
             </div>
         </Card>
