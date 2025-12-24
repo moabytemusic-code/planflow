@@ -38,7 +38,6 @@ function LessonCard({ lesson }: { lesson: Lesson }) {
                     )}
                     <span className="py-0.5">{lesson.duration}m</span>
                     <span className="py-0.5">{lesson.grade}</span>
-                    <span className="py-0.5">{lesson.grade}</span>
                 </div>
                 <div className="flex justify-between items-center pt-2">
                     {/* Stop propagation for button interaction */}
