@@ -125,20 +125,23 @@ export function AIPlanner({
                                     </div>
                                 </div>
 
+                                {object.standards && object.standards.length > 0 && (
+                                    <div className="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-md border border-slate-100 dark:border-slate-800">
+                                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">
+                                            {object.standardsOrigin ? object.standardsOrigin : "Common Core State Standards"}
+                                        </span>
+                                        <div className="flex flex-wrap gap-2">
+                                            {object.standards.map((std, i) => (
+                                                <span key={i} className="px-2 py-1 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-medium rounded border border-slate-200 dark:border-slate-600 shadow-sm">
+                                                    {std}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
                                 {object.learningObjectives && (
                                     <div className="prose dark:prose-invert max-w-none">
-                                        {object.standards && object.standards.length > 0 && (
-                                            <div className="mb-4">
-                                                <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 mb-2">Standards</h3>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {object.standards.map((std, i) => (
-                                                        <span key={i} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded border border-blue-100 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800">
-                                                            {std}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
                                         <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 mb-2">Objectives</h3>
                                         <ul className="list-disc list-inside space-y-1">
                                             {object.learningObjectives.map((obj, i) => (
@@ -183,6 +186,6 @@ export function AIPlanner({
                     </div>
                 )}
             </DialogContent>
-        </Dialog>
+        </Dialog >
     )
 }

@@ -25,12 +25,16 @@ export async function POST(req: Request) {
 
     // 3. Initiate AI Stream
     console.log("Starting AI generation for prompt:", prompt);
+    const userState = user ? await db.user.findUnique({ where: { email: user.email! }, select: { state: true } }) : null;
+    const standardSystem = userState?.state ? `${userState.state} State Standards` : "Common Core State Standards";
+
     try {
         const result = await streamObject({
             model: openai('gpt-4o'),
             schema: lessonPlanSchema,
             prompt: `You are an expert curriculum developer. Create a detailed lesson plan based on the following request: "${prompt}". 
-                 Ensure the plan is practical, engaging, and aligned with Common Core State Standards.`,
+                 Ensure the plan is practical, engaging, and aligned with ${standardSystem}.
+                 Set the 'standardsOrigin' field to "${standardSystem}".`,
             onFinish: async ({ object, error }) => {
                 if (error) {
                     console.error("AI Generation Error:", error);

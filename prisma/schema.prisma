@@ -13,6 +13,7 @@ model User {
   email            String        @unique
   name             String?       // User's name
   theme            String        @default("dark") // 'light', 'dark', 'midnight'
+  state            String?       // User's US State for standards (e.g. "Texas", "California")
   createdAt        DateTime      @default(now())
   stripeCustomerId String?
   subscriptionTier String        @default("FREE") // 'FREE' or 'PRO'

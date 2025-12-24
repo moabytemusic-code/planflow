@@ -155,7 +155,7 @@ export async function getUserData() {
     return dbUser
 }
 
-export async function updateProfile(data: { name?: string; theme?: string }) {
+export async function updateProfile(data: { name?: string; theme?: string; state?: string }) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 

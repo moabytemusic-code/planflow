@@ -9,6 +9,13 @@ import { toast } from 'sonner';
 import { getUserData, updateProfile } from '../actions';
 import { useTheme } from 'next-themes';
 import { Moon, Sun, Monitor, CheckCircle2, User, Mail, CreditCard, Palette } from 'lucide-react';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 
 interface UserData {
     id: string;
@@ -17,11 +24,21 @@ interface UserData {
     subscriptionTier: string;
     credits: number;
     theme: string;
+    state?: string | null;
 }
+
+const US_STATES = [
+    "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia",
+    "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland",
+    "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
+    "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
+    "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
+];
 
 export default function ProfilePage() {
     const [userData, setUserData] = useState<UserData | null>(null);
     const [name, setName] = useState('');
+    const [state, setState] = useState('');
     const [loading, setLoading] = useState(false);
     const { theme, setTheme } = useTheme();
 
@@ -31,6 +48,7 @@ export default function ProfilePage() {
             if (data) {
                 setUserData(data);
                 setName(data.name || '');
+                setState(data.state || '');
             }
         }
         loadData();
@@ -40,11 +58,11 @@ export default function ProfilePage() {
         e.preventDefault();
         setLoading(true);
         try {
-            await updateProfile({ name });
+            await updateProfile({ name, state });
             toast.success('Profile updated');
             // Refresh local state
             if (userData) {
-                setUserData({ ...userData, name });
+                setUserData({ ...userData, name, state });
             }
         } catch (error: unknown) {
             const message = error instanceof Error ? error.message : 'Failed to update profile';
@@ -107,6 +125,20 @@ export default function ProfilePage() {
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                 />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="state">State (for Standards)</Label>
+                                <Select name="state" value={state} onValueChange={setState}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select your state" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="Common Core">Common Core (Default)</SelectItem>
+                                        {US_STATES.map((s) => (
+                                            <SelectItem key={s} value={s}>{s}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                             </div>
                             <Button type="submit" disabled={loading} className="w-full bg-indigo-600 hover:bg-indigo-700">
                                 {loading ? 'Saving...' : 'Save Changes'}
