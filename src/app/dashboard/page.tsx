@@ -8,14 +8,7 @@ import { HelpBubble } from "@/components/help-bubble"
 import Link from "next/link"
 
 export default async function DashboardPage() {
-    console.log("Fetching lessons...")
-    let rawLessons = []
-    try {
-        rawLessons = await getLessons()
-    } catch (e) {
-        console.error("Dashboard getLessons Error:", e)
-        throw e
-    }
+    const rawLessons = await getLessons()
     const userData = await getUserData()
     // Serialize Date objects to avoid Client Component warnings
     const lessons = rawLessons.map(l => ({

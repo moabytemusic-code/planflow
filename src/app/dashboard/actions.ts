@@ -82,7 +82,7 @@ export async function getLessons() {
         where: {
             OR: [
                 { userId: dbUser.id },
-                // { shares: { some: { userEmail: user.email! } } }
+                { shares: { some: { userEmail: user.email! } } }
             ]
         },
         orderBy: {
