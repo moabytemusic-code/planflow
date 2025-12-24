@@ -29,15 +29,17 @@ function LessonCard({ lesson }: { lesson: Lesson }) {
     return (
         <Card className="overflow-hidden cursor-grab active:cursor-grabbing shadow-sm hover:shadow-lg border-l-4 border-l-indigo-500 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
             <div className="p-3 space-y-2">
-                <div className="font-semibold text-sm text-gray-900 dark:text-gray-100 leading-tight line-clamp-2 break-words">{lesson.title}</div>
-                <div className="text-[11px] font-medium text-indigo-600 dark:text-indigo-400 flex flex-wrap justify-between uppercase tracking-wide gap-2">
+                <div className="font-semibold text-sm text-gray-900 dark:text-gray-100 leading-tight line-clamp-2 break-words">
+                    {lesson.title}
+                </div>
+                <div className="flex flex-wrap items-center gap-2 text-[11px] font-medium uppercase tracking-wide text-indigo-600 dark:text-indigo-400">
                     {lesson.startTime && (
                         <span className="bg-indigo-50 dark:bg-indigo-900/40 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
                             {lesson.startTime}
                         </span>
                     )}
-                    <span className="py-0.5">{lesson.duration}m</span>
-                    <span className="py-0.5">{lesson.grade}</span>
+                    <span>{lesson.duration}m</span>
+                    <span>{lesson.grade}</span>
                 </div>
                 <div className="flex justify-between items-center pt-2">
                     {/* Stop propagation for button interaction */}
