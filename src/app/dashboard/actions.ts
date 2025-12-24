@@ -174,6 +174,30 @@ export async function updateLessonDetails(lessonId: string, data: {
     return { success: true }
 }
 
+export async function deleteLesson(lessonId: string) {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) throw new Error('Unauthorized')
+
+    // Verify ownership - ONLY owners can delete
+    const lesson = await db.lessonPlan.findUnique({
+        where: {
+            id: lessonId,
+            userId: user.id
+        }
+    })
+
+    if (!lesson) throw new Error('Unauthorized: You can only delete lessons you created.')
+
+    await db.lessonPlan.delete({
+        where: { id: lessonId }
+    })
+
+    revalidatePath('/dashboard')
+    return { success: true }
+}
+
 export async function getUserData() {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()

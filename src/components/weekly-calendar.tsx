@@ -8,8 +8,10 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { AIPlanner } from '@/components/ai-planner'
 import { DndContext, DragEndEvent, useDraggable, useDroppable, useSensors, useSensor, PointerSensor, KeyboardSensor } from '@dnd-kit/core'
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-import { updateLessonDate } from '@/app/dashboard/actions'
+import { updateLessonDate, deleteLesson } from '@/app/dashboard/actions'
 import { ShareLessonDialog } from '@/components/share-lesson-dialog'
+import { Trash2 } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface Lesson {
     id: string
@@ -43,8 +45,29 @@ function LessonCard({ lesson }: { lesson: Lesson }) {
                 </div>
                 <div className="flex justify-between items-center pt-2">
                     {/* Stop propagation for button interaction */}
-                    <div onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
-                        <ShareLessonDialog lessonId={lesson.id} lessonTitle={lesson.title} />
+                    <div className="flex gap-2">
+                        <div onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-6 w-6 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
+                                onClick={async () => {
+                                    if (confirm('Are you sure you want to delete this lesson? This cannot be undone.')) {
+                                        try {
+                                            await deleteLesson(lesson.id)
+                                            toast.success('Lesson deleted')
+                                        } catch {
+                                            toast.error('Failed to delete lesson')
+                                        }
+                                    }
+                                }}
+                            >
+                                <Trash2 className="h-3 w-3" />
+                            </Button>
+                        </div>
+                        <div onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+                            <ShareLessonDialog lessonId={lesson.id} lessonTitle={lesson.title} />
+                        </div>
                     </div>
                     <div onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
                         <AIPlanner
