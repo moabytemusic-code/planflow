@@ -30,7 +30,7 @@ export async function POST(req: Request) {
             model: openai('gpt-4o'),
             schema: lessonPlanSchema,
             prompt: `You are an expert curriculum developer. Create a detailed lesson plan based on the following request: "${prompt}". 
-                 Ensure the plan is practical, engaging, and standards-aligned.`,
+                 Ensure the plan is practical, engaging, and aligned with Common Core State Standards.`,
             onFinish: async ({ object, error }) => {
                 if (error) {
                     console.error("AI Generation Error:", error);
