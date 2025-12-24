@@ -242,3 +242,7 @@ export async function updateProfile(data: { name?: string; theme?: string; state
         throw error
     }
 }
+
+export async function revalidateDashboard() {
+    revalidatePath('/dashboard')
+}

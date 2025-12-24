@@ -129,7 +129,7 @@ export default function ProfilePage() {
                             <div className="space-y-2">
                                 <Label htmlFor="state">State (for Standards)</Label>
                                 <Select name="state" value={state} onValueChange={setState}>
-                                    <SelectTrigger>
+                                    <SelectTrigger className="border-slate-300 dark:border-slate-700">
                                         <SelectValue placeholder="Select your state" />
                                     </SelectTrigger>
                                     <SelectContent>

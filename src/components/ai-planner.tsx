@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { experimental_useObject as useObject } from '@ai-sdk/react'
 import { lessonPlanSchema } from '@/lib/schemas'
+import { revalidateDashboard } from '@/app/dashboard/actions'
 import { Button } from '@/components/ui/button'
 import { Loader2, Sparkles, Share2, Eye } from 'lucide-react'
 import {
@@ -33,6 +34,9 @@ export function AIPlanner({
     const { object, submit, isLoading, error } = useObject({
         api: '/api/generate-lesson',
         schema: lessonPlanSchema,
+        onFinish: async () => {
+            await revalidateDashboard()
+        }
     })
 
     if (hasContent) {
