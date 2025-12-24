@@ -4,6 +4,9 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/utils/supabase/server'
 import db from '@/lib/db'
 import { Prisma } from '@prisma/client'
+import { Resend } from 'resend'
+import { ShareInvitationEmail } from '@/components/emails/share-invitation'
+
 
 export async function createLesson(formData: FormData) {
     const supabase = await createClient()
@@ -115,6 +118,27 @@ export async function shareLesson(lessonId: string, email: string) {
             permission: 'EDIT'
         }
     })
+
+    // Fetch inviter details for the email
+    const inviter = await db.user.findUnique({ where: { id: user.id } })
+    const inviterName = inviter?.name || user.email || 'A colleague'
+
+    try {
+        const resend = new Resend(process.env.RESEND_API_KEY)
+        await resend.emails.send({
+            from: 'PlanFlow <onboarding@resend.dev>',
+            to: email,
+            subject: `Invitation to collaborate on "${lesson.title}"`,
+            react: ShareInvitationEmail({
+                inviterName,
+                lessonTitle: lesson.title,
+                lessonId: lesson.id
+            }) as React.ReactNode
+        })
+    } catch (error) {
+        console.error('Failed to send share email:', error)
+        // Don't block the UI flow, just log the error
+    }
 
     revalidatePath('/dashboard')
     return { success: true }
