@@ -33,13 +33,18 @@ export async function signup(formData: FormData) {
     // Auto-confirm if focusing on MVP dev speed, or handle email confirmation properly.
     // For now, let's keep it standard but ensure we catch the error properly.
 
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+        ? process.env.NEXT_PUBLIC_BASE_URL
+        : process.env.VERCEL_URL
+            ? `https://${process.env.VERCEL_URL}`
+            : 'http://localhost:3000';
+
     const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
             // For local dev, this ensures the link redirects back correctly.
-            // Using 3010 as the default since that's what we're running on.
-            emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3010'}/auth/callback`,
+            emailRedirectTo: `${baseUrl}/auth/callback`,
         },
     })
 
@@ -68,8 +73,14 @@ export async function forgotPassword(formData: FormData) {
     const supabase = await createClient()
     const email = formData.get('email') as string
 
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+        ? process.env.NEXT_PUBLIC_BASE_URL
+        : process.env.VERCEL_URL
+            ? `https://${process.env.VERCEL_URL}`
+            : 'http://localhost:3000';
+
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3010'}/auth/callback?next=/dashboard/settings/password`,
+        redirectTo: `${baseUrl}/auth/callback?next=/dashboard/profile`,
     })
 
     if (error) {
