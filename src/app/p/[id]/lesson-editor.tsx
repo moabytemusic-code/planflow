@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { format } from 'date-fns';
 import { Clock, Edit2 } from 'lucide-react';
-import { HeaderPrintButton, PrintButton } from './print-buttons';
+import { HeaderExportButtons, PrintButton } from './print-buttons';
 import { updateLessonDetails } from '@/app/dashboard/actions';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -107,7 +107,7 @@ export function LessonEditor({ lesson, isOwner }: LessonEditorProps) {
                                     <Edit2 className="w-4 h-4" /> Edit
                                 </Button>
                             )}
-                            <HeaderPrintButton />
+                            <HeaderExportButtons lesson={lesson} />
                         </div>
                     </div>
 
