@@ -4,8 +4,9 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { UserNav } from '@/components/user-nav'
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet'
-import { Menu, LayoutDashboard, Library, User } from 'lucide-react'
+import { Menu, LayoutDashboard, Library, User, Zap } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { FeedbackButton } from '@/components/feedback-button'
 
 export default async function DashboardLayout({
     children,
@@ -14,6 +15,8 @@ export default async function DashboardLayout({
 }) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
+
+    console.log('Current user email:', user?.email)
 
     if (!user) {
         redirect('/login')
@@ -27,6 +30,7 @@ export default async function DashboardLayout({
     const navLinks = [
         { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
         { href: '/dashboard/lessons', label: 'Curriculum', icon: Library },
+        { href: '/dashboard/tools/viral-hooks', label: 'Viral Hooks', icon: Zap },
         { href: '/dashboard/profile', label: 'Profile', icon: User },
     ]
 
@@ -92,9 +96,10 @@ export default async function DashboardLayout({
                     </div>
                 </div>
             </header>
-            <main className="flex-1 space-y-4 p-8 pt-6">
+            <main className="flex-1 space-y-4 p-8 pt-6 relative">
                 {children}
             </main>
+            <FeedbackButton userEmail={user.email} />
         </div>
     )
 }

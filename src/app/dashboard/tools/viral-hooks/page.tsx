@@ -1,0 +1,130 @@
+'use client';
+
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Loader2, Zap, Copy, CheckCircle2 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+
+export default function ViralHooksPage() {
+    const [topic, setTopic] = useState('');
+    const [grade, setGrade] = useState('5th Grade');
+    const [loading, setLoading] = useState(false);
+    const [hooks, setHooks] = useState<any[]>([]);
+    const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+
+    const generateHooks = async () => {
+        if (!topic) return;
+        setLoading(true);
+        setHooks([]);
+
+        try {
+            const res = await fetch('/api/viral-hook', {
+                method: 'POST',
+                body: JSON.stringify({ topic, grade }),
+            });
+            const data = await res.json();
+            if (data.hooks) {
+                setHooks(data.hooks);
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const copyToClipboard = (text: string, index: number) => {
+        navigator.clipboard.writeText(text);
+        setCopiedIndex(index);
+        setTimeout(() => setCopiedIndex(null), 2000);
+    };
+
+    return (
+        <div className="max-w-4xl mx-auto space-y-8">
+            <div className="space-y-4 text-center md:text-left">
+                <h1 className="text-3xl font-bold flex items-center gap-2 justify-center md:justify-start">
+                    <div className="p-2 bg-yellow-100 rounded-lg text-yellow-600 dark:bg-yellow-900/30">
+                        <Zap className="w-6 h-6" />
+                    </div>
+                    Viral Hook Forge
+                </h1>
+                <p className="text-slate-500 max-w-xl">
+                    Stop starting lessons with "Open your books." Use AI to generate attention-grabbing openers based on current trends, psychological curiosity gaps, and memes.
+                </p>
+            </div>
+
+            <Card className="border-indigo-100 dark:border-indigo-900 shadow-lg">
+                <CardContent className="p-6 space-y-4">
+                    <div className="grid md:grid-cols-4 gap-4">
+                        <div className="md:col-span-3 space-y-2">
+                            <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Topic</label>
+                            <Input
+                                placeholder="e.g. The Water Cycle, Long Division, The Civil War..."
+                                value={topic}
+                                onChange={(e) => setTopic(e.target.value)}
+                                className="h-12"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Grade Level</label>
+                            <Select value={grade} onValueChange={setGrade}>
+                                <SelectTrigger className="h-12">
+                                    <SelectValue placeholder="Grade" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {['Kindergarten', '1st Grade', '2nd Grade', '3rd Grade', '4th Grade', '5th Grade', '6th Grade', '7th Grade', '8th Grade', 'High School'].map(g => (
+                                        <SelectItem key={g} value={g}>{g}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+                    <Button
+                        onClick={generateHooks}
+                        disabled={!topic || loading}
+                        className="w-full h-12 text-lg font-bold bg-indigo-600 hover:bg-indigo-700 text-white"
+                    >
+                        {loading ? (
+                            <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Cooking...</>
+                        ) : (
+                            <><Zap className="w-5 h-5 mr-2 fill-current" /> Generate Viral Hooks</>
+                        )}
+                    </Button>
+                </CardContent>
+            </Card>
+
+            <div className="grid gap-6">
+                {hooks.map((hook, i) => (
+                    <Card key={i} className="overflow-hidden border-l-4 border-l-indigo-500 hover:shadow-md transition-all">
+                        <CardHeader className="bg-slate-50 dark:bg-slate-900/50 pb-3">
+                            <div className="flex justify-between items-center">
+                                <div className="text-sm font-bold text-indigo-600 uppercase tracking-wider flex items-center gap-2">
+                                    <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
+                                    {hook.type}
+                                </div>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => copyToClipboard(hook.content, i)}
+                                    className="text-slate-400 hover:text-indigo-600"
+                                >
+                                    {copiedIndex === i ? <CheckCircle2 className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                                </Button>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="p-6">
+                            <p className="text-xl font-medium text-slate-800 dark:text-slate-100 leading-relaxed mb-4">
+                                "{hook.content}"
+                            </p>
+                            <p className="text-sm text-slate-500 italic bg-amber-50 dark:bg-amber-900/20 p-3 rounded-lg border border-amber-100 dark:border-amber-800/50">
+                                💡 <strong>Why it works:</strong> {hook.explanation}
+                            </p>
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
+        </div>
+    );
+}
