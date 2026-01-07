@@ -36,10 +36,8 @@ export function FeedbackButton({ userEmail }: { userEmail?: string }) {
                 setOpen(false);
                 setMessage('');
                 toast.success("Feedback sent! Thank you for helping us improve.");
-            } else {
-                toast.error("Failed to send feedback. Please try again.");
             }
-        } catch (e) {
+        } catch {
             toast.error("Something went wrong.");
         } finally {
             setLoading(false);

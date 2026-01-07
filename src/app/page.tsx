@@ -123,7 +123,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold mb-3">AI Lesson Generation</h3>
                 <p className="text-slate-500 leading-relaxed">
-                  Input a topic like "Photosynthesis for 5th grade" and get a full lesson plan, vocabulary, and activities in under 10 seconds.
+                  Input a topic like &quot;Photosynthesis for 5th grade&quot; and get a full lesson plan, vocabulary, and activities in under 10 seconds.
                 </p>
               </div>
 
@@ -146,7 +146,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold mb-3">Viral Hook Forge</h3>
                 <p className="text-slate-500 leading-relaxed">
-                  Students bored? Use our "Viral Hook" tool to generate engaging lesson openers based on current trends and memes.
+                  Students bored? Use our &quot;Viral Hook&quot; tool to generate engaging lesson openers based on current trends and memes.
                 </p>
               </div>
             </div>
@@ -211,7 +211,7 @@ export default function Home() {
                   <div className="flex gap-1 text-yellow-400 mb-4">
                     {[1, 2, 3, 4, 5].map(s => <Star key={s} className="w-4 h-4 fill-current" />)}
                   </div>
-                  <p className="text-slate-600 dark:text-slate-300 mb-6 italic">"This tool literally saved my sanity. I used to spend 4 hours on Sundays planning. Now I do it in 15 minutes."</p>
+                  <p className="text-slate-600 dark:text-slate-300 mb-6 italic">&quot;This tool literally saved my sanity. I used to spend 4 hours on Sundays planning. Now I do it in 15 minutes.&quot;</p>
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-slate-200"></div>
                     <div>

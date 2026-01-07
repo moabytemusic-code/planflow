@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Loader2, Zap, Copy, CheckCircle2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
@@ -11,6 +11,7 @@ export default function ViralHooksPage() {
     const [topic, setTopic] = useState('');
     const [grade, setGrade] = useState('5th Grade');
     const [loading, setLoading] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [hooks, setHooks] = useState<any[]>([]);
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
@@ -51,7 +52,7 @@ export default function ViralHooksPage() {
                     Viral Hook Forge
                 </h1>
                 <p className="text-slate-500 max-w-xl">
-                    Stop starting lessons with "Open your books." Use AI to generate attention-grabbing openers based on current trends, psychological curiosity gaps, and memes.
+                    Stop starting lessons with &quot;Open your books.&quot; Use AI to generate attention-grabbing openers based on current trends, psychological curiosity gaps, and memes.
                 </p>
             </div>
 
@@ -116,7 +117,7 @@ export default function ViralHooksPage() {
                         </CardHeader>
                         <CardContent className="p-6">
                             <p className="text-xl font-medium text-slate-800 dark:text-slate-100 leading-relaxed mb-4">
-                                "{hook.content}"
+                                &quot;{hook.content}&quot;
                             </p>
                             <p className="text-sm text-slate-500 italic bg-amber-50 dark:bg-amber-900/20 p-3 rounded-lg border border-amber-100 dark:border-amber-800/50">
                                 💡 <strong>Why it works:</strong> {hook.explanation}
