@@ -6,8 +6,8 @@ import { generateWordDocument } from '@/utils/docx-generator';
 import { saveAs } from 'file-saver';
 import { toast } from 'sonner';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface PrintButtonProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     lesson?: any; // We'll pass the full lesson object here
 }
 
