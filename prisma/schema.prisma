@@ -59,3 +59,9 @@ model Subscription {
   status           String   // 'active', 'past_due', 'canceled'
   currentPeriodEnd DateTime
 }
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}

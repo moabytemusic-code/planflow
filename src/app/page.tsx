@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Zap, Calendar, Sparkles, BrainCircuit, ArrowRight, Star } from "lucide-react";
+import { NewsletterForm } from "@/components/newsletter-form";
 
 export default function Home() {
   return (
@@ -238,42 +239,47 @@ export default function Home() {
                 </Button>
               </Link>
               <p className="text-sm text-indigo-200 opacity-80">No credit card required for free tier.</p>
-            </div>
-          </div>
-        </section>
-      </main>
+            </section>
 
-      <footer className="py-12 border-t bg-slate-900 text-slate-400">
-        <div className="container mx-auto px-4 grid md:grid-cols-4 gap-8">
-          <div className="space-y-4">
-            <span className="font-bold text-xl text-white">PlanFlow</span>
-            <p className="text-sm">Empowering educators with AI tools that give them their weekends back.</p>
-          </div>
-          <div>
-            <h4 className="font-bold text-white mb-4">Product</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="#features" className="hover:text-white">Features</Link></li>
-              <li><Link href="/pricing" className="hover:text-white">Pricing</Link></li>
-              <li><Link href="#" className="hover:text-white">Changelog</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-bold text-white mb-4">Legal</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="#" className="hover:text-white">Privacy Policy</Link></li>
-              <li><Link href="#" className="hover:text-white">Terms of Service</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-bold text-white mb-4">Contact</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="#" className="hover:text-white">Twitter</Link></li>
-              <li><Link href="#" className="hover:text-white">Email Us</Link></li>
-            </ul>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
+            {/* NEWSLETTER */}
+            <section className="py-24 bg-slate-50 dark:bg-slate-950 border-t">
+              <div className="container mx-auto px-4">
+                <NewsletterForm />
+              </div>
+            </section>
+          </main>
+
+          <footer className="py-12 border-t bg-slate-900 text-slate-400">
+            <div className="container mx-auto px-4 grid md:grid-cols-4 gap-8">
+              <div className="space-y-4">
+                <span className="font-bold text-xl text-white">PlanFlow</span>
+                <p className="text-sm">Empowering educators with AI tools that give them their weekends back.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-white mb-4">Product</h4>
+                <ul className="space-y-2 text-sm">
+                  <li><Link href="#features" className="hover:text-white">Features</Link></li>
+                  <li><Link href="/pricing" className="hover:text-white">Pricing</Link></li>
+                  <li><Link href="#" className="hover:text-white">Changelog</Link></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-white mb-4">Legal</h4>
+                <ul className="space-y-2 text-sm">
+                  <li><Link href="#" className="hover:text-white">Privacy Policy</Link></li>
+                  <li><Link href="#" className="hover:text-white">Terms of Service</Link></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-white mb-4">Contact</h4>
+                <ul className="space-y-2 text-sm">
+                  <li><Link href="#" className="hover:text-white">Twitter</Link></li>
+                  <li><Link href="#" className="hover:text-white">Email Us</Link></li>
+                </ul>
+              </div>
+            </div>
+          </footer>
+        </div >
+        );
 }
 
