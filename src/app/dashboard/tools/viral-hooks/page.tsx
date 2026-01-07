@@ -43,6 +43,7 @@ export default function ViralHooksPage() {
         setTimeout(() => setCopiedIndex(null), 2000);
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleShare = async (hook: any) => {
         const shareData = {
             title: 'Viral Lesson Hook',

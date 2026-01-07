@@ -42,7 +42,7 @@ export function NewsletterForm() {
                 <div className="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 mb-3">
                     <CheckCircle2 className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-bold text-green-700">You're in!</h3>
+                <h3 className="text-lg font-bold text-green-700">You&apos;re in!</h3>
                 <p className="text-sm text-green-600">Keep an eye on your inbox for your first freebie.</p>
             </div>
         );
@@ -56,7 +56,7 @@ export function NewsletterForm() {
                 </div>
                 <h2 className="text-3xl font-bold">Get 1 Free AI Lesson Hook Every Week</h2>
                 <p className="text-slate-500">
-                    Not ready to join? No problem. Join 2,000+ teachers getting "Viral Hook" ideas delivered to their inbox every Sunday night.
+                    Not ready to join? No problem. Join 2,000+ teachers getting &quot;Viral Hook&quot; ideas delivered to their inbox every Sunday night.
                 </p>
                 <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
                     <Input
